@@ -1,9 +1,23 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import CheckboxGroup from 'react-checkbox-group';
-import { Container, Content, MainTitle, CheckboxContainer, CheckboxLabel, Button, ButtonDelete, ButtonEdit } from './styles';
-import { useNavigate } from "react-router-dom";
+import {
+    Container,
+    Content,
+    MainTitle,
+    CheckboxContainer,
+    CheckboxLabel,
+    Buttons,
+    Button,
+    ButtonContainer, 
+    CancelButton, 
+    RemoveButton
+} from './styles';
+
+import { Link } from "react-router-dom";
+import { Modal } from "../../Modal";
+
 
 interface Data {
     id: string;
@@ -20,9 +34,18 @@ interface Data {
 }
 
 export function Details() {
-    const navigate = useNavigate()
     const [data, setData] = useState<Data | null>(null);
     const { id } = useParams()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate()
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     function showApi() {
         axios
@@ -52,7 +75,7 @@ export function Details() {
         return checkedDays;
     }
 
-    function handleCheckboxChange(checkedDays: string[]): void {
+    function handleCheckboxChange(checkedDays: string[]) {
         setData(checkedDays);
     }
 
@@ -60,33 +83,31 @@ export function Details() {
         return <div>Carregando...</div>;
     }
 
+
+
     function handleDeleteList() {
         axios
             .delete(`http://172.18.0.126:3333/tasks/${id}`)
-            .then((response) => {
-                const task: Data = response.data;
-                setData(task);
+            .then(() => {
+                setData(null);
+                navigate('/')
             })
             .catch((error) => {
                 console.error('Erro ao buscar dados da API:', error);
             });
 
-            navigate('/')
     };
 
-    function handleEditButton(){
-        navigate('/cadastro')
-    }
+
+
+
 
     return (
         <Container>
             <MainTitle>{data.compromisso}</MainTitle>
-            <ul>
-                <li key={data.id}>
-                    <p>{data.description}</p>
-                </li>
-            </ul>
-
+            <h2 key={data.id}>
+                <p>{data.description}</p>
+            </h2>
             <Content>
                 <CheckboxGroup name="week-name" value={getCheckedDays(data)} onChange={handleCheckboxChange}>
                     {(Checkbox) => (
@@ -115,16 +136,23 @@ export function Details() {
                         </CheckboxContainer>
                     )}
                 </CheckboxGroup>
-                <Button>
-                    <div>
-                        <ButtonDelete onClick={handleDeleteList}>Remover</ButtonDelete>
-                        <ButtonEdit onClick={handleEditButton}>Editar</ButtonEdit>
-                    </div>
-                    
-                </Button>
-                
-            </Content>
+                <Buttons>
+                    <Link to={`/cadastro/${id}`}>
+                        <Button>Editar</Button>
+                    </Link>
+                    <Button onClick={openModal}>Deletar</Button>
+                </Buttons>
+                <Modal isOpen={isModalOpen} onClose={closeModal} title="Remover compromisso?">
+                    <ButtonContainer>
+                        <CancelButton onClick={closeModal}>Cancelar</CancelButton>
+                        <RemoveButton onClick={handleDeleteList}>Remover</RemoveButton>
+                    </ButtonContainer>
+                </Modal>
 
+
+
+
+            </Content>
         </Container>
     );
 }

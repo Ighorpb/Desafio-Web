@@ -52,36 +52,50 @@ export const CheckboxLabel = styled.label`
   margin-bottom: 8px;
   margin-right: 16px;
 `;
-export const Button = styled.div`
+export const Buttons = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-export const ButtonDelete = styled.button`
-  padding: 8px 16px;
-  background-color: #960000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #fe0000;
-  }
-`;
-
-export const ButtonEdit = styled.button`
-  padding: 8px 16px;
+export const Button = styled.button`
   background-color: #007bff;
   color: #fff;
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
 
   &:hover {
     background-color: #0056b3;
   }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+export const CancelButton = styled.button`
+  background-color: #0056b3;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
+export const RemoveButton = styled.button`
+  background-color: #fe0000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
 `;
 
 

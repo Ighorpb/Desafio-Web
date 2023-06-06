@@ -1,101 +1,126 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
-
-
-
+import { useNavigate, useParams } from 'react-router-dom';
 import { Container, MainTitle, Form, Input, TextArea, Button, CheckboxContainer, CheckboxLabel } from './styles';
-
 import CheckboxGroup from 'react-checkbox-group';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Data {
-  id: string;
-  compromisso: string;
-  description: string;
-  imagem: string;
-  segunda_feira: boolean;
-  terca_feira: boolean;
-  quarta_feira: boolean;
-  quinta_feira: boolean;
-  sexta_feira: boolean;
-  sabado: boolean;
-  domingo: boolean;
+    id: string;
+    compromisso: string;
+    description: string;
+    imagem: string;
+    segunda_feira: boolean;
+    terca_feira: boolean;
+    quarta_feira: boolean;
+    quinta_feira: boolean;
+    sexta_feira: boolean;
+    sabado: boolean;
+    domingo: boolean;
 }
 
 export function Cadastro() {
-  const [compromisso, setCompromisso] = useState('');
-  const [description, setDescription] = useState('');
-  const [dates, setDates] = useState<string[]>([]);
-  const navigate = useNavigate()
+    const [compromisso, setCompromisso] = useState('');
+    const [description, setDescription] = useState('');
+    const [dates, setDates] = useState<string[]>([]);
+    const navigate = useNavigate();
+    const { id } = useParams()
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDates(dates);
-    }, 5000);
+    useEffect(() => {
+        if (id) {
+            showApi();
+        }
+    }, [id]);
 
-    return () => clearTimeout(timer);
-  }, []);
+    function getCheckedDays(task: Data): string[] {
+        const checkedDays: string[] = [];
+        if (task.segunda_feira) checkedDays.push('Segunda-feira');
+        if (task.terca_feira) checkedDays.push('Terça-feira');
+        if (task.quarta_feira) checkedDays.push('Quarta-feira');
+        if (task.quinta_feira) checkedDays.push('Quinta-feira');
+        if (task.sexta_feira) checkedDays.push('Sexta-feira');
+        if (task.sabado) checkedDays.push('Sábado');
+        if (task.domingo) checkedDays.push('Domingo');
+        return checkedDays;
+    }
 
-  function handleEnviarDados() {
-    const data: Data = {
-      id: uuidv4(),
-      compromisso: compromisso,
-      description: description,
-      imagem: '',
-      segunda_feira: dates.includes('Segunda-feira'),
-      terca_feira: dates.includes('Terça-feira'),
-      quarta_feira: dates.includes('Quarta-feira'),
-      quinta_feira: dates.includes('Quinta-feira'),
-      sexta_feira: dates.includes('Sexta-feira'),
-      sabado: dates.includes('Sábado'),
-      domingo: dates.includes('Domingo'),
-    };
-
-    axios
-      .post('http://172.18.0.126:3333/tasks', data)
-      .then(response => {
-        console.log('Deu certo, dados na api', response.data);
-          Cadastro()
-      })
-      .catch(err => {
-        console.log('Deu ruim...', err);
-      });
-      
-      navigate('/');
-}
-    function handleEditContent(){
+    function showApi() {
         axios
-            .put(`http://172.18.0.126:3333/tasks/${id}`, {
-                "compromisso": "teste 32",
-                "description": "teste 33",
-                "imagem": "",
-                "segunda_feira": false,
-                "terca_feira": false,
-                "quarta_feira": false,
-                "quinta_feira": false,
-                "sexta_feira": true,
-                "sabado": false,
-                "domingo": false
-            })
+            .get(`http://172.18.0.126:3333/tasks/${id}`)
             .then((response) => {
                 const task: Data = response.data;
-                setData(task);
+                setCompromisso(task.compromisso);
+                setDescription(task.description);
+                setDates(getCheckedDays(task));
             })
             .catch((err) => {
-                console.log('Ocorreu um erro', err)
+                console.error('Erro ao buscar dados da API:', err);
+            });
+    }
+
+
+    useEffect(() => {
+        showApi();
+        const timer = setTimeout(() => {
+            setDates(dates);
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    function handleAtualizarDados() {
+        const data: Data = {
+            id: uuidv4(),
+            compromisso: compromisso,
+            description: description,
+            imagem: '',
+            segunda_feira: dates.includes('Segunda-feira'),
+            terca_feira: dates.includes('Terça-feira'),
+            quarta_feira: dates.includes('Quarta-feira'),
+            quinta_feira: dates.includes('Quinta-feira'),
+            sexta_feira: dates.includes('Sexta-feira'),
+            sabado: dates.includes('Sábado'),
+            domingo: dates.includes('Domingo'),
+        };
+
+        axios
+            .put(`http://172.18.0.126:3333/tasks/${id}`, data)
+            .then(response => {
+                console.log('Dados atualizados na API:', response.data);
+                navigate('/');
             })
+            .catch(err => {
+                console.error('Erro ao atualizar dados na API:', err);
+            });
+    }
+
+    function handleEnviarDados() {
+        const data: Data = {
+            id: uuidv4(),
+            compromisso: compromisso,
+            description: description,
+            imagem: '',
+            segunda_feira: dates.includes('Segunda-feira'),
+            terca_feira: dates.includes('Terça-feira'),
+            quarta_feira: dates.includes('Quarta-feira'),
+            quinta_feira: dates.includes('Quinta-feira'),
+            sexta_feira: dates.includes('Sexta-feira'),
+            sabado: dates.includes('Sábado'),
+            domingo: dates.includes('Domingo'),
+        };
+
+        axios
+            .post('http://172.18.0.126:3333/tasks', data)
+            .then(response => {
+                console.log('Deu certo, dados na api', response.data);
+                navigate('/');
+            })
+            .catch(err => {
+                console.log('Deu ruim...', err);
+            });
 
     }
 
-    useEffect(()=> {
-        if(id){
-            const response = axios.get(`http://172.18.0.126:3333/tasks/${id}`,)
-            const task: Data = response.data;
-            setData(task);
-        }
-    },[])
-        
 
     return (
         <Container>
@@ -107,12 +132,14 @@ export function Cadastro() {
                     placeholder="Título"
                     value={compromisso}
                     onChange={(event) => setCompromisso(event.target.value)}
+                    required
                 />
                 <TextArea
                     name="descricao"
                     placeholder="Descrição"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
+                    required
                 />
             </Form>
             <CheckboxGroup name="week-name" value={dates} onChange={setDates}>
@@ -144,7 +171,8 @@ export function Cadastro() {
             </CheckboxGroup>
 
             <Button onClick={handleEnviarDados}>Cadastrar</Button>
+            <Button onClick={handleAtualizarDados}>Atualizar</Button>
+
         </Container>
     );
 }
-

@@ -55,3 +55,16 @@ export const Content = styled.div`
   }
 `;
 
+export const Button = styled.div`
+  background-color: #0056b3;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+`;
+

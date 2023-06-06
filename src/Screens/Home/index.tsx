@@ -7,6 +7,7 @@ import {
   MainTitle,
   Filter,
   Content,
+  Button
 } from "./styles";
 
 interface Data {
@@ -46,6 +47,9 @@ export function Home() {
   return (
     <Container>
       <MainTitle>Compromisso</MainTitle>
+      <Link to={'/cadastro'} >
+        <Button>Cadastro</Button>
+      </Link>
       <Filter>
         <input type="search" name="" id="" placeholder="Pesquise pelo título ou descrição..." />
       </Filter>
