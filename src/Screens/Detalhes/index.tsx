@@ -12,7 +12,9 @@ import {
     Button,
     ButtonContainer, 
     CancelButton, 
-    RemoveButton
+    RemoveButton,
+    Img,
+    ButtonDelete
 } from './styles';
 
 import { Link } from "react-router-dom";
@@ -104,8 +106,9 @@ export function Details() {
 
     return (
         <Container>
-            <MainTitle>{data.compromisso}</MainTitle>
-            <h2 key={data.id}>
+                <MainTitle>{data.compromisso}</MainTitle>
+            <h2 key={data.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Img src={data.imagem} alt="Imagem" />
                 <p>{data.description}</p>
             </h2>
             <Content>
@@ -140,7 +143,7 @@ export function Details() {
                     <Link to={`/cadastro/${id}`}>
                         <Button>Editar</Button>
                     </Link>
-                    <Button onClick={openModal}>Deletar</Button>
+                    <ButtonDelete onClick={openModal}>Deletar</ButtonDelete>
                 </Buttons>
                 <Modal isOpen={isModalOpen} onClose={closeModal} title="Remover compromisso?">
                     <ButtonContainer>

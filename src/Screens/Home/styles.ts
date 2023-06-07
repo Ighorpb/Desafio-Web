@@ -6,6 +6,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 `;
 
 export const MainTitle = styled.h1`
@@ -29,6 +30,15 @@ export const Filter = styled.div`
   }
 `;
 
+export const Img = styled.img`
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+`;
+
+
+
 export const Content = styled.div`
   border-top: 1px solid #ccc;
   padding-top: 20px;
@@ -39,18 +49,26 @@ export const Content = styled.div`
     padding: 0;
 
     li {
-      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 5px;
       padding: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    } 
-    item.compromisso{
-      font-size: 24px;
+    }
+
+    ${Img} {
+      flex: 0 0 50px; // Largura fixa de 50px para a imagem
     }
 
     p {
+      flex: 1;
       margin: 0;
+    }
+
+    item.compromisso {
+      font-size: 24px;
     }
   }
 `;

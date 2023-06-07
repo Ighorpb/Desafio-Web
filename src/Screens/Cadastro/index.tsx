@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, MainTitle, Form, Input, TextArea, Button, CheckboxContainer, CheckboxLabel } from './styles';
+import { Container, MainTitle, Form, Input, TextArea, Button, CheckboxContainer, CheckboxLabel, Img } from './styles';
 import CheckboxGroup from 'react-checkbox-group';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,9 +22,12 @@ interface Data {
 export function Cadastro() {
     const [compromisso, setCompromisso] = useState('');
     const [description, setDescription] = useState('');
+    const [imagem, setImage] = useState('');
     const [dates, setDates] = useState<string[]>([]);
     const navigate = useNavigate();
     const { id } = useParams()
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     useEffect(() => {
         if (id) {
@@ -51,6 +54,7 @@ export function Cadastro() {
                 const task: Data = response.data;
                 setCompromisso(task.compromisso);
                 setDescription(task.description);
+                setImage(task.imagem);
                 setDates(getCheckedDays(task));
             })
             .catch((err) => {
@@ -63,7 +67,7 @@ export function Cadastro() {
         showApi();
         const timer = setTimeout(() => {
             setDates(dates);
-        }, 5000);
+        }, 1000000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -73,7 +77,7 @@ export function Cadastro() {
             id: uuidv4(),
             compromisso: compromisso,
             description: description,
-            imagem: '',
+            imagem: imagem,
             segunda_feira: dates.includes('Segunda-feira'),
             terca_feira: dates.includes('Terça-feira'),
             quarta_feira: dates.includes('Quarta-feira'),
@@ -95,11 +99,18 @@ export function Cadastro() {
     }
 
     function handleEnviarDados() {
+        if (!imagem.trim() ||
+            !compromisso.trim() ||
+            !description.trim() ||
+            dates.length === 0){
+            return;
+        }
+
         const data: Data = {
             id: uuidv4(),
             compromisso: compromisso,
             description: description,
-            imagem: '',
+            imagem: imagem,
             segunda_feira: dates.includes('Segunda-feira'),
             terca_feira: dates.includes('Terça-feira'),
             quarta_feira: dates.includes('Quarta-feira'),
@@ -126,6 +137,15 @@ export function Cadastro() {
         <Container>
             <MainTitle>Cadastro / Alteração</MainTitle>
             <Form>
+                <Input 
+                type="url" 
+                name="imagem" 
+                value={imagem}
+                placeholder='Insira a URL da imagem desejada' 
+                onChange={(event) => setImage(event.target.value)}
+                required
+                />
+                <Img src={imagem} alt='' style={{ display: id ? 'block' : 'none' }} />
                 <Input
                     type="text"
                     name="titulo"
@@ -170,8 +190,9 @@ export function Cadastro() {
                 )}
             </CheckboxGroup>
 
-            <Button onClick={handleEnviarDados}>Cadastrar</Button>
-            <Button onClick={handleAtualizarDados}>Atualizar</Button>
+            <Button onClick={id ? handleAtualizarDados : handleEnviarDados} disabled={!imagem.trim() || !compromisso.trim() || !description.trim()}>
+                {id ? 'Atualizar' : 'Cadastrar'}
+            </Button>
 
         </Container>
     );

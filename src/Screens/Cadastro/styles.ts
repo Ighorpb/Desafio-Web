@@ -7,11 +7,13 @@ export const Container = styled.div`
   justify-content: flex-start;
   height: 100vh;
   padding: 16px;
+  font-family: Arial, Helvetica, sans-serif;
 `;
 
 export const MainTitle = styled.h1`
   font-size: 24px;
   margin-bottom: 16px;
+  margin-top: 100px;
 `;
 
 export const Form = styled.form`
@@ -60,4 +62,15 @@ export const Button = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+`;
+
+export const Img = styled.img`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-top: 2px;
 `;

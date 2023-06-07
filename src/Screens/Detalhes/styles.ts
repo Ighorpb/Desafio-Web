@@ -4,15 +4,25 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 `;
 
 export const MainTitle = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
+  border-bottom: 2px solid #CCC;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
+export const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 export const Content = styled.div`
   border-top: 1px solid #ccc;
@@ -29,13 +39,19 @@ export const Content = styled.div`
       border-radius: 5px;
       padding: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    item.compromisso {
-      font-size: 24px;
-    }
+      display: flex;
+      align-items: center;
 
-    p {
-      margin: 0;
+      img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      p {
+        margin: 0;
+      }
     }
   }
 `;
@@ -52,10 +68,13 @@ export const CheckboxLabel = styled.label`
   margin-bottom: 8px;
   margin-right: 16px;
 `;
+
 export const Buttons = styled.div`
+  border-top: 1px solid #ccc;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  
 `;
 
 export const Button = styled.button`
@@ -66,6 +85,7 @@ export const Button = styled.button`
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
 
   &:hover {
     background-color: #0056b3;
@@ -98,5 +118,22 @@ export const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
+export const ButtonDelete = styled.button`
+  background-color: #fe0000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+`;
 
+;
 
+export const Img = styled.img`
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+`;

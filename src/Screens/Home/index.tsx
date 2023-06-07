@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import { 
-  Container, 
+import {
+  Container,
   MainTitle,
   Filter,
   Content,
-  Button
+  Button,
+  Img
 } from "./styles";
 
 interface Data {
@@ -33,7 +34,7 @@ export function Home() {
       .then((response) => {
         setData(response.data);
       })
-      
+
       .catch((error) => {
         console.error('Erro ao buscar dados da API:', error);
       });
@@ -57,17 +58,18 @@ export function Home() {
         <ul>
           {data.map((item) => (
             <li key={item.id}>
-                  <Link to={`/detalhes/${item.id}`}>
-                      <p>{item.compromisso}</p>
-                      <p>{item.description}</p>
-                      {item.segunda_feira && <p>Segunda</p>}
-                      {item.terca_feira && <p>Terça</p>}
-                      {item.quarta_feira && <p>Quarta</p>}
-                      {item.quinta_feira && <p>Quinta</p>}
-                      {item.sexta_feira && <p>Sexta</p>}
-                      {item.sabado && <p>Sábado</p>}
-                      {item.domingo && <p>Domingo</p>}
-                </Link>
+              <Img src={item.imagem} alt="Imagem" />
+              <Link to={`/detalhes/${item.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                <p>{item.compromisso}</p>
+                <p>{item.description}</p>
+                {item.segunda_feira && <p>Segunda</p>}
+                {item.terca_feira && <p>Terça</p>}
+                {item.quarta_feira && <p>Quarta</p>}
+                {item.quinta_feira && <p>Quinta</p>}
+                {item.sexta_feira && <p>Sexta</p>}
+                {item.sabado && <p>Sábado</p>}
+                {item.domingo && <p>Domingo</p>}
+              </Link>
             </li>
           ))}
         </ul>
