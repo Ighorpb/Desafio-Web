@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import {
@@ -10,6 +9,7 @@ import {
   Button,
   Img
 } from "./styles";
+import { api } from '../../services/api';
 
 interface Data {
   id: string;
@@ -29,8 +29,8 @@ export function Home() {
   const [data, setData] = useState<Data[]>([]);
 
   function showData() {
-    axios
-      .get('http://172.18.0.126:3333/tasks')
+    api
+      .get('/tasks')
       .then((response) => {
         setData(response.data);
       })

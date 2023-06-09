@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "api": "json-server ./src/services/server.json --host  172.18.0.126 --port 3333 --delay 700"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",

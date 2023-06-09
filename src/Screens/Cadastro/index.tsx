@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, MainTitle, Form, Input, TextArea, Button, CheckboxContainer, CheckboxLabel, Img } from './styles';
 import CheckboxGroup from 'react-checkbox-group';
 import { v4 as uuidv4 } from 'uuid';
+import { api } from '../../services/api';
 
 interface Data {
     id: string;
@@ -26,7 +26,6 @@ export function Cadastro() {
     const [dates, setDates] = useState<string[]>([]);
     const navigate = useNavigate();
     const { id } = useParams()
-    const [errorMessage, setErrorMessage] = useState('');
 
 
     useEffect(() => {
@@ -48,8 +47,8 @@ export function Cadastro() {
     }
 
     function showApi() {
-        axios
-            .get(`http://172.18.0.126:3333/tasks/${id}`)
+        api
+            .get(`/tasks/${id}`)
             .then((response) => {
                 const task: Data = response.data;
                 setCompromisso(task.compromisso);
@@ -87,8 +86,8 @@ export function Cadastro() {
             domingo: dates.includes('Domingo'),
         };
 
-        axios
-            .put(`http://172.18.0.126:3333/tasks/${id}`, data)
+        api
+            .put(`/tasks/${id}`, data)
             .then(response => {
                 console.log('Dados atualizados na API:', response.data);
                 navigate('/');
@@ -120,8 +119,8 @@ export function Cadastro() {
             domingo: dates.includes('Domingo'),
         };
 
-        axios
-            .post('http://172.18.0.126:3333/tasks', data)
+        api
+            .post('/tasks', data)
             .then(response => {
                 console.log('Deu certo, dados na api', response.data);
                 navigate('/');

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from 'react-router-dom';
 import CheckboxGroup from 'react-checkbox-group';
 import {
@@ -19,6 +18,7 @@ import {
 
 import { Link } from "react-router-dom";
 import { Modal } from "../../Modal";
+import { api } from "../../services/api";
 
 
 interface Data {
@@ -50,8 +50,8 @@ export function Details() {
     };
 
     function showApi() {
-        axios
-            .get(`http://172.18.0.126:3333/tasks/${id}`)
+        api
+            .get(`/tasks/${id}`)
             .then((response) => {
                 const task: Data = response.data;
                 setData(task);
@@ -88,8 +88,8 @@ export function Details() {
 
 
     function handleDeleteList() {
-        axios
-            .delete(`http://172.18.0.126:3333/tasks/${id}`)
+        api
+            .delete(`/tasks/${id}`)
             .then(() => {
                 setData(null);
                 navigate('/')
